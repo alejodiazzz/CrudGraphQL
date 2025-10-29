@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gustavo Alejandro Diaz Montoya",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.2",
