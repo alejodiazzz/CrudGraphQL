@@ -39,6 +39,28 @@ const typeDefs = `#graphql
     deleteDish(idDish: String!): Dish
   }
 `;
+const resolvers = {
+  Query: {
+    getAll: async () => await Dish.find(),
+    getById: async (_, { idDish }) => await Dish.findOne({ idDish }),
+    getBetweenCalories: async (_, { min, max }) => await Dish.find({ 
+      calories: { $gte: min, $lte: max } 
+    }),
+  },
+  Mutation: {
+    createDish: async (_, { idDish, name, calories, isVegetarian, value, comments }) => {
+      const newDish = new Dish({ idDish, name, calories, isVegetarian, value, comments });
+      await newDish.save();
+      return newDish;
+    },
+    updateDish: async (_, { idDish, ...updates }) => {
+      return await Dish.findOneAndUpdate({ idDish }, updates, { new: true });
+    },
+    deleteDish: async (_, { idDish }) => {
+      return await Dish.findOneAndDelete({ idDish });
+    },
+  },
+};
 
 const server = new ApolloServer({
  typeDefs,
