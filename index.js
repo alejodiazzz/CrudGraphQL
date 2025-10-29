@@ -16,9 +16,33 @@ mongoose.connect(MONGO_URI)
 
 import Dish from './models/Dish.js';
 
+const typeDefs = `#graphql
+  type Dish {
+    _id: ID!
+    idDish: String!
+    name: String!
+    calories: Int!
+    isVegetarian: Boolean!
+    value: Int!
+    comments: String
+  }
+
+  type Query {
+    getAll: [Dish]
+    getById(idDish: String!): Dish
+    getBetweenCalories(min: Int!, max: Int!): [Dish]
+  }
+
+  type Mutation {
+    createDish(idDish: String!, name: String!, calories: Int!, isVegetarian: Boolean!, value: Int!, comments: String): Dish
+    updateDish(idDish: String!, name: String, calories: Int, isVegetarian: Boolean, value: Int, comments: String): Dish
+    deleteDish(idDish: String!): Dish
+  }
+`;
 
 const server = new ApolloServer({
- 
+ typeDefs,
+  resolvers,
 });
 
 const { url } = await startStandaloneServer(server, {
